@@ -144,7 +144,7 @@ for sim in config{1..4}; do
 done
 wait  # Wait for all background jobs
 ```
-## Troubleshooting <a name="troubleshooting"></a>
+## 11. Troubleshooting <a name="troubleshooting"></a>
 **Common Issues**:
 - Permission Denied: Verify .sif file accessibility with ls -l $SINGULARITY_IMAGE
 - Missing Dependencies: Use ldd check from Section 4
@@ -152,7 +152,7 @@ wait  # Wait for all background jobs
 - Environment Conflicts: Use --cleanenv flag if needed:
 ```singularity exec --cleanenv $SINGULARITY_IMAGE ...```
 
-### Additional Resources <a name="additional-resources"></a>
+## 12 Additional Resources <a name="additional-resources"></a>
 - https://wiki.chpc.ac.za/howto:singularity
 - Delft3D Official Documentation
 
