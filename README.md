@@ -28,7 +28,7 @@ singularity exec $SINGULARITY_IMAGE ls -l /opt/delft3d/bin/
 ```bash
 singularity exec $SINGULARITY_IMAGE ldd /opt/delft3d/bin/d_hydro
 ```
-If any libraries are marked as "not found," they might need to be installed or properly linked inside the container.
+- If any libraries are marked as "not found," they might need to be installed or properly linked inside the container.
 
 ### 5. Test the Singularity container by running the d_hydro executable file
 - After loading the module and confirming the SINGULARITY_IMAGE path is set, run the following command to execute d_hydro inside the Singularity container:
