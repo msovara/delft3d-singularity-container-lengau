@@ -24,7 +24,7 @@ echo $SINGULARITY_IMAGE
 singularity exec $SINGULARITY_IMAGE ls -l /opt/delft3d/bin/
 ```
 
-### 4. Test the Singularity container by running the delwaq1 command i.e. Run delwaq1 using Singularity
+### 4. Test the Singularity container by running the delwaq1 executable file
 - After loading the module and confirming the SINGULARITY_IMAGE path is set, run the following command to execute delwaq1 inside the Singularity container:
 ```bash
 singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/delwaq1
