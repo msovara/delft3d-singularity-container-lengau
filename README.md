@@ -64,7 +64,7 @@ singularity exec $SINGULARITY_IMAGE ldd /opt/delft3d/bin/d_hydro
 
 ### 5. View Build Script (If available)
 ```bash
-singularity inspect --deffile /home/apps/chpc/earth/delft3d-singularity-container/centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb
+singularity inspect --deffile /home/apps/chpc/earth/delft3d-singularity-container/centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb.sif
 ```
 ----
 
