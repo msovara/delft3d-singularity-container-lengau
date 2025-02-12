@@ -80,14 +80,33 @@ Singularity> delwaq1 --help
 ```bash
 singularity exec $SINGULARITY_IMAGE delwaq1 --help
 ```
-### 7. Running Test case:
+### 7. Running Test case: Internal Bind
 ```bash
-singularity exec $SINGULARITY_IMAGE \
+singularity exec --no-home \
+  -B /mnt/lustre/users/msovara:/output \
+  $SINGULARITY_IMAGE \
   /opt/delft3d/bin/d_hydro \
   /opt/delft3d/examples/config.xml \
   /opt/delft3d/examples/input.mdw \
-  > output.log 2>&1
+  > /home/msovara/lustre/delft-output.log 2>&1
 ```
+ **Explanation of the Command**
+- --no-home: Prevents binding of the host home directory into the container.
+- -B /mnt/lustre/users/msovara:/output: Binds the host directory /mnt/lustre/users/msovara to /output inside the container.
+- /opt/delft3d/bin/d_hydro: The executable inside the container.
+**- /opt/delft3d/examples/config.xml: Path to the configuration file inside the container.**
+**- /opt/delft3d/examples/input.mdw: Path to the input file inside the container.**
+- > /output/delft-output.log 2>&1: Redirects both stdout and stderr to a log file on the host.
+
+### 8. Running Test Case: External Bind
+```bash
+singularity exec --no-home \
+  -B /mnt/lustre/users/msovara/input:/input \
+  -B /mnt/lustre/users/msovara/output:/output \
+  $SINGULARITY_IMAGE \
+  /opt/delft3d/bin/d_hydro /input/config.xml /input/input.mdw > /output/delft-output.log 2>&1
+```
+
 ## Data Management: Binding Host Directories <a name="data-management-binding-host-directories"></a>
 
 ### 8. Basic Directory Binding
