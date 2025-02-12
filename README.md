@@ -3,46 +3,158 @@ A guide to running the Delft3D Singularity Container on Lengau.
 
 ## **User Notes**  
 
-### 1. Sign into Login02 on Lengau  
-Before using the container, sign in and load the required modules:  
+# Running Delft3D via Singularity/Docker Containers on Lengau Cluster
+
+**Author**: Mthetho Vuyo Sovara 
+**Last Updated**: 12 February 2025
+
+---
+
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Prerequisites](#prerequisites)
+3. [Initial Setup](#initial-setup)
+4. [Container Inspection & Validation](#container-inspection--validation)
+5. [Executing Delft3D Tools](#executing-delft3d-tools)
+6. [Data Management: Binding Host Directories](#data-management-binding-host-directories)
+7. [Running Batch Jobs](#running-batch-jobs)
+8. [Troubleshooting](#troubleshooting)
+9. [Additional Resources](#additional-resources)
+
+---
+
+## Introduction <a name="introduction"></a>
+This guide explains how to run Delft3D hydrodynamic modeling tools using Singularity containers on the CHPC Lengau cluster. Singularity allows reproducible execution by encapsulating dependencies in a portable container.
+
+---
+
+## Prerequisites <a name="prerequisites"></a>
+- CHPC Lengau cluster account
+- Basic Linux command-line knowledge
+- Familiarity with Delft3D workflow
+
+---
+
+## Initial Setup <a name="initial-setup"></a>
+
+### 1. Login and Module Configuration
 ```bash
-ssh username@lengau.chpc.ac.za
-module purge
+ssh username@lengau.chpc.ac.za  # Replace with your username
+module purge                    # Clean environment
 module load chpc/singularity/3.5.3
 module load chpc/earth/delft3d-container/delft3d-singularity
-module list
+module list                     # Verify loaded modules
 ```
 
 ### 2. Check if the singularity image variable is correctly set:
 After loading the module, verify that the SINGULARITY_IMAGE environment variable is set properly by running:
 ```bash
 echo $SINGULARITY_IMAGE
+# Expected output: Path to .sif file like:
+# /apps/chpc/earth/delft3d-container/centos7_delft3d4-65936_sha256...sif
 ```
-
-### 3. Inspect the container structure
+## Container Inspection & Validation <a name="container-inspection--validation"></a>
+### 3. Inspect container content
 ```bash
 singularity exec $SINGULARITY_IMAGE ls -l /opt/delft3d/bin/
 ```
 
-### 4. Check for missing directories
+### 4. Check library dependencies 
 ```bash
 singularity exec $SINGULARITY_IMAGE ldd /opt/delft3d/bin/d_hydro
 ```
-- If any libraries are marked as "not found," they might need to be installed or properly linked inside the container.
+- **Note**: All libraries should show valid paths. "Not found" errors indicate container configuration issues.
 
-### 5. Test the Singularity container by running the d_hydro executable file
-- After loading the module and confirming the SINGULARITY_IMAGE path is set, run the following command to execute d_hydro inside the Singularity container:
+----
+
+## Executing Delft3D Tools <a name="executing-delft3d-tools"></a>
+
+### 5. Basic Execution Methods
+**Interactive Shell**
 ```bash
-singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/d_hydro
+singularity shell $SINGULARITY_IMAGE
+Singularity> delwaq1 --help
 ```
-- The d_hydro binary exists inside ```/opt/delft3d/bin/``` and has executable permissions ```(-rwxr-xr-x)```. Run wrapper script: e.g. 
-
+**Single Command Execution**
 ```bash
-singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/run_delwaq1.sh
+singularity exec $SINGULARITY_IMAGE delwaq1 --help
 ```
----
+### 6. Running Test case:
+```bash
+singularity exec $SINGULARITY_IMAGE \
+  /opt/delft3d/bin/d_hydro \
+  /opt/delft3d/examples/config.xml \
+  /opt/delft3d/examples/input.mdw \
+  > output.log 2>&1
+```
+## Data Management: Binding Host Directories <a name="data-management-binding-host-directories"></a>
 
-### 6. Alternatively, you can open a Shell Inside the Container  
+### 7. Basic Directory Binding
+```bash
+singularity exec -B /host/path:/container/path $SINGULARITY_IMAGE delwaq1
+```
+**Multi-directory Example**:
+```bash
+singularity exec \
+  -B /lustre/users/you/data:/mnt/data \
+  -B /lustre/users/you/configs:/mnt/configs \
+  $SINGULARITY_IMAGE \
+  /opt/delft3d/bin/delwaq1 -i /mnt/configs/input.dat
+```
+**Best Practices**:
+- Use absolute paths for binding
+- Avoid binding unnecessary directories
+- Maintain separate input/output directories
+
+## Running Batch Jobs <a name="running-batch-jobs"></a>
+### 8. Sample PBS Script (Sequential Execution)
+```bash
+#!/bin/bash
+#PBS -N delft3d_sequential
+#PBS -l select=1:ncpus=4:mem=8GB
+#PBS -l walltime=02:00:00
+#PBS -j oe
+#PBS -o /path/to/output.log
+
+module load chpc/earth/delft3d-container/delft3d-singularity
+
+# Define paths
+HOST_DATA="/lustre/users/yourusername/data"
+SIF_IMAGE=$SINGULARITY_IMAGE
+
+# Execute workflow
+singularity exec -B $HOST_DATA:/mnt/data $SIF_IMAGE \
+  /opt/delft3d/bin/delwaq1 /mnt/data/input1.dat
+
+singularity exec -B $HOST_DATA:/mnt/data $SIF_IMAGE \
+  /opt/delft3d/bin/delwaq2 /mnt/data/input2.dat
+```
+### 9. Parallel Execution Template
+```bash
+#!/bin/bash
+#PBS -N delft3d_parallel
+#PBS -l select=1:ncpus=8:mem=16GB
+...
+
+# Run concurrent processes
+for sim in config{1..4}; do
+  singularity exec -B $HOST_DATA:/mnt/data $SIF_IMAGE \
+    /opt/delft3d/bin/dflowfm /mnt/data/${sim}.xml &
+done
+wait  # Wait for all background jobs
+```
+## Troubleshooting <a name="troubleshooting"></a>
+**Common Issues**:
+- Permission Denied: Verify .sif file accessibility with ls -l $SINGULARITY_IMAGE
+- Missing Dependencies: Use ldd check from Section 4
+- XML Errors: Validate with xmllint before execution
+- Environment Conflicts: Use --cleanenv flag if needed:
+```singularity exec --cleanenv $SINGULARITY_IMAGE ...```
+
+### Additional Resources <a name="additional-resources"></a>
+- https://wiki.chpc.ac.za/howto:singularity
+- Delft3D Official Documentation
+
 To start an interactive session inside the container, run:  
 ```bash
 singularity shell centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif
