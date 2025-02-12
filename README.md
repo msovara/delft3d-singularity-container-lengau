@@ -1,5 +1,5 @@
 # Singularity & Docker Containers on Lengau  
-A guide to running the Delft3D Singularity Container on Lengau
+A guide to running the Delft3D Singularity Container on Lengau. 
 
 ## **User Notes**  
 
