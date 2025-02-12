@@ -24,19 +24,25 @@ echo $SINGULARITY_IMAGE
 singularity exec $SINGULARITY_IMAGE ls -l /opt/delft3d/bin/
 ```
 
-### 4. Test the Singularity container by running the delwaq1 executable file
-- After loading the module and confirming the SINGULARITY_IMAGE path is set, run the following command to execute delwaq1 inside the Singularity container:
+### 4. Check for missing directories
 ```bash
-singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/delwaq1
+singularity exec $SINGULARITY_IMAGE ldd /opt/delft3d/bin/d_hydro
 ```
-- The delwaq1 binary exists inside ```/opt/delft3d/bin/``` and has executable permissions ```(-rwxr-xr-x)```. Run wrapper script:
+If any libraries are marked as "not found," they might need to be installed or properly linked inside the container.
+
+### 5. Test the Singularity container by running the d_hydro executable file
+- After loading the module and confirming the SINGULARITY_IMAGE path is set, run the following command to execute d_hydro inside the Singularity container:
+```bash
+singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/d_hydro
+```
+- The d_hydro binary exists inside ```/opt/delft3d/bin/``` and has executable permissions ```(-rwxr-xr-x)```. Run wrapper script: e.g. 
 
 ```bash
 singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/run_delwaq1.sh
 ```
 ---
 
-### 5. Alternatively, you can open a Shell Inside the Container  
+### 6. Alternatively, you can open a Shell Inside the Container  
 To start an interactive session inside the container, run:  
 ```bash
 singularity shell centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif
@@ -46,21 +52,21 @@ You will see a `Singularity>` prompt. Inside the shell, you can run:
 delwaq1 --help
 ```
 
-### 6. Run a Specific Command from Outside the Container  
+### 7. Run a Specific Command from Outside the Container  
 If you prefer to run delft3d without entering the container shell:  
 ```bash
 singularity exec centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif delwaq1 --help
 ```
 ---
 
-### 7. Running Delft3D examples
+### 8. Running Delft3D examples
 This should execute the d_hydro program with the .mdw and XML configuration input files and log the output into output.log. Make sure that both the input files and the executable are accessible inside the container.
 ```bash
 singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/d_hydro /opt/delft3d/examples/config.xml /opt/delft3d/examples/input.mdw > /mnt/lustre/users/msovara/delft3d-output.log 2>&1
 ```
 - **NOTE**: d_hydro tries to read an XML configuration file. Verify that the XML configuration file is correctly formatted. Even a small syntax issue (such as a missing tag or unclosed element) can cause this error.
 
-### 8. Binding to a Host Directory
+### 9. Binding to a Host Directory
 Scenario:
 You want to bind a directory on the host, for example, /lustre/usernam/data, to a directory inside the container, say /mnt/data, so that you can access the host's data from within the container
 ```bash
@@ -75,14 +81,14 @@ What Happens:
 - The /home/username/data directory from the host system is now accessible inside the container at /mnt/data.
 - When delwaq1 runs, it can read from and write to the /mnt/data directory inside the container, which actually corresponds to /home/username/data on your host system.
 
-### 9. Example for Multiple Directories:
+### 10. Example for Multiple Directories:
 If you need to bind multiple directories, for example, /home/username/configs and /home/username/results, you can use the following command: 
 ```bash
 singularity exec -B /home/username/data:/mnt/data -B /home/username/configs:/mnt/configs -B /home/username/results:/mnt/results $SINGULARITY_IMAGE /opt/delft3d/bin/delwaq1
 ```
 In this case, /home/username/data, /home/username/configs, and /home/username/results on the host will be accessible inside the container at /mnt/data, /mnt/configs, and /mnt/results, respectively.
 
-### 10. Running serial Delft3D jobs in Batch Mode 
+### 11. Running serial Delft3D jobs in Batch Mode 
 Sequential Execution (Run binaries one after the other)
 If the binaries need to be run one after the other, you can modify your script to include each command in sequence. 
 ```bash
@@ -118,7 +124,7 @@ Explanation:
 The binaries (delwaq1, delwaq2, and dflowfm) are executed one after the other.
 The output for each binary is appended to the same log file (delft3d_output.log) using >>.
 
-### 11. Parallel Execution (Run binaries simultaneously)
+### 12. Parallel Execution (Run binaries simultaneously)
 If the binaries can be run in parallel, you can modify the script to execute them concurrently using background jobs (&) or GNU parallel. Here’s an example using background jobs:
 
 ```bash
