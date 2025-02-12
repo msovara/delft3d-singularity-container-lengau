@@ -15,7 +15,7 @@ module list
 
 ### 2. Check if the singularity image variable is correctly set:
 After loading the module, verify that the SINGULARITY_IMAGE environment variable is set properly by running:
-```
+```bash
 echo $SINGULARITY_IMAGE
 ```
 
@@ -25,9 +25,14 @@ singularity exec $SINGULARITY_IMAGE ls -l /opt/delft3d/bin/
 ```
 
 ### 4. Test the Singularity container by running the delwaq1 command i.e. Run delwaq1 using Singularity
-After loading the module and confirming the SINGULARITY_IMAGE path is set, run the following command to execute delwaq1 inside the Singularity container:
-```
+- After loading the module and confirming the SINGULARITY_IMAGE path is set, run the following command to execute delwaq1 inside the Singularity container:
+```bash
 singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/delwaq1
+```
+- The delwaq1 binary exists inside ```/opt/delft3d/bin/``` and has executable permissions ```(-rwxr-xr-x)```. Run wrapper script:
+
+```bash
+singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/run_delwaq1.sh
 ```
 ---
 
@@ -46,11 +51,12 @@ If you prefer to run delft3d without entering the container shell:
 ```bash
 singularity exec centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif delwaq1 --help
 ```
+---
 
 ### 7. Binding to a Host Directory
 Scenario:
 You want to bind a directory on the host, for example, /lustre/usernam/data, to a directory inside the container, say /mnt/data, so that you can access the host's data from within the container
-```
+```bash
 singularity exec -B /home/username/data:/mnt/data $SINGULARITY_IMAGE /opt/delft3d/bin/delwaq1
 ```
 Explanation:
