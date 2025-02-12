@@ -52,10 +52,13 @@ If you prefer to run delft3d without entering the container shell:
 singularity exec centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif delwaq1 --help
 ```
 ---
-### 7. 
+
+### 7. Running Delft3D examples
+This should execute the d_hydro program with the .mdw and XML configuration input files and log the output into output.log. Make sure that both the input files and the executable are accessible inside the container.
 ```bash
-singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/d_hydro /opt/delft3d/examples/03_flow-wave/r17.mdf > /home/rrapolaki/lustre/Delft3D/output.log 2>&1
+singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/d_hydro /opt/delft3d/examples/config.xml /opt/delft3d/examples/input.mdw > /mnt/lustre/users/msovara/delft3d-output.log 2>&1
 ```
+- **NOTE**: d_hydro tries to read an XML configuration file. Verify that the XML configuration file is correctly formatted. Even a small syntax issue (such as a missing tag or unclosed element) can cause this error.
 
 ### 8. Binding to a Host Directory
 Scenario:
