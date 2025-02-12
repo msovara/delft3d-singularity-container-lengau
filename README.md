@@ -106,6 +106,10 @@ singularity exec --no-home \
   $SINGULARITY_IMAGE \
   /opt/delft3d/bin/d_hydro /input/config.xml /input/input.mdw > /output/delft-output.log 2>&1
 ```
+**Avoiding Conflicts**
+- Use --no-home to prevent automatic binding of your home directory.
+- Use explicit bind paths to avoid overlapping directories.
+- Ensure the container paths do not conflict with internal paths (e.g., /opt/delft3d).
 
 ## Data Management: Binding Host Directories <a name="data-management-binding-host-directories"></a>
 
