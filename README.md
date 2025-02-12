@@ -52,8 +52,12 @@ If you prefer to run delft3d without entering the container shell:
 singularity exec centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif delwaq1 --help
 ```
 ---
+### 7. 
+```bash
+singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/d_hydro /opt/delft3d/examples/03_flow-wave/r17.mdf > /home/rrapolaki/lustre/Delft3D/output.log 2>&1
+```
 
-### 7. Binding to a Host Directory
+### 8. Binding to a Host Directory
 Scenario:
 You want to bind a directory on the host, for example, /lustre/usernam/data, to a directory inside the container, say /mnt/data, so that you can access the host's data from within the container
 ```bash
@@ -68,14 +72,14 @@ What Happens:
 - The /home/username/data directory from the host system is now accessible inside the container at /mnt/data.
 - When delwaq1 runs, it can read from and write to the /mnt/data directory inside the container, which actually corresponds to /home/username/data on your host system.
 
-### 8. Example for Multiple Directories:
+### 9. Example for Multiple Directories:
 If you need to bind multiple directories, for example, /home/username/configs and /home/username/results, you can use the following command: 
 ```bash
 singularity exec -B /home/username/data:/mnt/data -B /home/username/configs:/mnt/configs -B /home/username/results:/mnt/results $SINGULARITY_IMAGE /opt/delft3d/bin/delwaq1
 ```
 In this case, /home/username/data, /home/username/configs, and /home/username/results on the host will be accessible inside the container at /mnt/data, /mnt/configs, and /mnt/results, respectively.
 
-### 9. Running serial Delft3D jobs in Batch Mode 
+### 10. Running serial Delft3D jobs in Batch Mode 
 Sequential Execution (Run binaries one after the other)
 If the binaries need to be run one after the other, you can modify your script to include each command in sequence. 
 ```bash
@@ -111,7 +115,7 @@ Explanation:
 The binaries (delwaq1, delwaq2, and dflowfm) are executed one after the other.
 The output for each binary is appended to the same log file (delft3d_output.log) using >>.
 
-### 10. Parallel Execution (Run binaries simultaneously)
+### 11. Parallel Execution (Run binaries simultaneously)
 If the binaries can be run in parallel, you can modify the script to execute them concurrently using background jobs (&) or GNU parallel. Here’s an example using background jobs:
 
 ```bash
