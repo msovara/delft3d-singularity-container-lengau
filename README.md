@@ -113,7 +113,7 @@ singularity exec --no-home \
 
 ## Data Management: Binding Host Directories <a name="data-management-binding-host-directories"></a>
 
-### 8. Basic Directory Binding
+### 9. Basic Directory Binding
 ```bash
 singularity exec -B /host/path:/container/path $SINGULARITY_IMAGE delwaq1
 ```
@@ -131,7 +131,7 @@ singularity exec \
 - Maintain separate input/output directories
 
 ## Running Batch Jobs <a name="running-batch-jobs"></a>
-### 9. Sample PBS Script (Sequential Execution)
+### 10. Sample PBS Script (Sequential Execution)
 ```bash
 #!/bin/bash
 #PBS -N delft3d_sequential
@@ -153,7 +153,7 @@ singularity exec -B $HOST_DATA:/mnt/data $SIF_IMAGE \
 singularity exec -B $HOST_DATA:/mnt/data $SIF_IMAGE \
   /opt/delft3d/bin/delwaq2 /mnt/data/input2.dat
 ```
-### 10. Parallel Execution Template
+### 11. Parallel Execution Template
 ```bash
 #!/bin/bash
 #PBS -N delft3d_parallel
@@ -167,7 +167,7 @@ for sim in config{1..4}; do
 done
 wait  # Wait for all background jobs
 ```
-## 11. Troubleshooting <a name="troubleshooting"></a>
+## 12. Troubleshooting <a name="troubleshooting"></a>
 **Common Issues**:
 - Permission Denied: Verify .sif file accessibility with ls -l $SINGULARITY_IMAGE
 - Missing Dependencies: Use ldd check from Section 4
@@ -175,11 +175,11 @@ wait  # Wait for all background jobs
 - Environment Conflicts: Use --cleanenv flag if needed:
 ```singularity exec --cleanenv $SINGULARITY_IMAGE ...```
 
-## 12 Additional Resources <a name="additional-resources"></a>
+## 13. Additional Resources <a name="additional-resources"></a>
 - https://wiki.chpc.ac.za/howto:singularity
 - Delft3D Official Documentation
 
-
+---
 
 ### Under Construction...
 To start an interactive session inside the container, run:  
