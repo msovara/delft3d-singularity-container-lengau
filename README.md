@@ -146,11 +146,10 @@ Provides depth values at grid points (if not embedded in the `.grd` file).
 ---
 
 ```bash
-singularity exec --no-home \
-  -B /mnt/lustre/users/msovara/input:/input \
-  -B /mnt/lustre/users/msovara/output:/output \
-  $SINGULARITY_IMAGE \
-  /opt/delft3d/bin/d_hydro /input/config.xml /input/input.mdw > /output/delft-output.log 2>&1
+singularity exec \
+  --bind $(pwd):/data \
+  /home/apps/chpc/earth/delft3d-singularity-container/centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif \
+  /opt/delft3d/bin/d_hydro /data/r17.mdf > /output/delft-output.log 2>&1
 ```
 **Avoiding Conflicts**
 - Use --no-home to prevent automatic binding of your home directory.
