@@ -99,6 +99,52 @@ singularity exec --no-home \
 - > /output/delft-output.log 2>&1: Redirects both stdout and stderr to a log file on the host.
 
 ### 8. Running Test Case: External Bind
+
+## Delft3D Input Files for Simulation
+
+Delft3D requires several input files to run a simulation. Below is a breakdown of the essential files and how they are used.
+
+### 📂 Core Input Files
+
+#### 🔹 1. Grid File (`.grd`)
+Defines the computational grid, including:
+- Bathymetry data
+- Coordinates
+- Grid cell connectivity  
+
+**Example:** `grid.grd`
+
+#### 🔹 2. Main Input File (`.mdf`)
+Master configuration file that specifies:
+- Simulation time and timestep  
+- Physical and numerical parameters  
+- Links to other input files  
+
+**Example:** `flow2d3d.mdf`
+
+#### 🔹 3. Boundary Conditions File (`.bnd`)
+Defines open boundaries for:
+- Water levels  
+- Discharges  
+- Wind forcing (if applicable)  
+
+**Example:** `boundary.bnd`
+
+#### 🔹 4. Initial Conditions File (`.ini`)
+Sets the starting conditions for:
+- Water levels  
+- Velocities  
+- Salinity and temperature (optional)  
+
+**Example:** `initial.ini`
+
+#### 🔹 5. Depth File (`.dep`)
+Provides depth values at grid points (if not embedded in the `.grd` file).  
+
+**Example:** `depth.dep`
+
+---
+
 ```bash
 singularity exec --no-home \
   -B /mnt/lustre/users/msovara/input:/input \
