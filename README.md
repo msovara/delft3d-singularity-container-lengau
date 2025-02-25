@@ -1,6 +1,6 @@
 ## **User Notes**  
 
-# Running Delft3D via Singularity/Docker Containers on Lengau Cluster
+# Running the Delft3D Flexible Mesh Singularity Container on LENGAU
 
 **Author**: Mthetho Vuyo Sovara 
 **Last Updated**: 12 February 2025
@@ -47,9 +47,10 @@ module list                     # Verify loaded modules
 After loading the module, verify that the SINGULARITY_IMAGE environment variable is set properly by running:
 ```bash
 echo $SINGULARITY_IMAGE
-# Expected output: Path to .sif file like:
-# /apps/chpc/earth/delft3d-container/centos7_delft3d4-65936_sha256...sif
 ```
+Expected output: Path to .sif file like:
+`/apps/chpc/earth/delft3d-container/centos7_delft3d4-65936_sha256...sif`
+
 ## Container Inspection & Validation <a name="container-inspection--validation"></a>
 ### 3. Inspect container content
 ```bash
@@ -146,10 +147,7 @@ Provides depth values at grid points (if not embedded in the `.grd` file).
 ---
 
 ```bash
-singularity exec \
-  --bind $(pwd):/data \
-  /home/apps/chpc/earth/delft3d-singularity-container/centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif \
-  /opt/delft3d/bin/d_hydro /data/r17.mdf > /output/delft-output.log 2>&1
+ > /output/delft-output.log 2>&1
 ```
 **Avoiding Conflicts**
 - Use --no-home to prevent automatic binding of your home directory.
