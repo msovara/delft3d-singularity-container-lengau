@@ -71,17 +71,7 @@ singularity inspect --deffile /home/apps/chpc/earth/delft3d-singularity-containe
 
 ## Executing Delft3D Tools <a name="executing-delft3d-tools"></a>
 
-### 6. Basic Execution Methods
-**Interactive Shell**
-```bash
-singularity shell $SINGULARITY_IMAGE
-Singularity> delwaq1 --help
-```
-**Single Command Execution**
-```bash
-singularity exec $SINGULARITY_IMAGE delwaq1 --help
-```
-### 7. Example Running Test Case: Internal Bind
+### 6. Example Running Test Case: Internal Bind
 ```bash
 singularity exec --no-home \
   -B /mnt/lustre/users/msovara:/output \
@@ -99,10 +89,7 @@ singularity exec --no-home \
 **- /opt/delft3d/examples/input.mdw: Path to the input file inside the container.**
 -  /output/delft-output.log 2>&1: Redirects both stdout and stderr to a log file on the host.
 
-### 8. Running Test Case: External Bind
-
-## Delft3D Input Files for Simulation
-
+### 7. Delft3D Input Files for Simulation
 Delft3D requires several input files to run a simulation. Below is a breakdown of the essential files and how they are used.
 
 ### 📂 Core Input Files
@@ -145,6 +132,7 @@ Provides depth values at grid points (if not embedded in the `.grd` file).
 **Example:** `depth.dep`
 
 ---
+### 8. Run d_flowd3d
 In the delflt3d directory, inside the `example` directory, d_flow2d3d is missing, but there is a wrapper script. Execute the container using the wrapper script: 
 ```bash
 singularity exec /home/apps/chpc/earth/delft3d-singularity-container/centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif \
