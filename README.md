@@ -78,5 +78,5 @@ Singularity> d_hydro --help
 ```
 Single Command Execution
 ```bash
-singularity exec $SINGULARITY_IMAGE delwaq1 --help
+singularity exec $SINGULARITY_IMAGE d_hydro --help
 ```
