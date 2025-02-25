@@ -61,3 +61,22 @@ singularity exec $SINGULARITY_IMAGE ls -l /opt/delft3d/bin/
 singularity exec $SINGULARITY_IMAGE ldd /opt/delft3d/bin/d_hydro
 ```
 - Note: All libraries should show valid paths. "Not found" errors indicate container configuration issues.
+
+### 5. View Build Script (If Available)
+```bash
+singularity inspect --deffile $SINGULARITY_IMAGE
+```
+---
+
+🛠️ Executing Delft3D Tools <a name="executing-delft3d-tools"></a>
+
+### 6. Basic Execution Methods
+   Interactive Shell Example
+```bash
+singularity shell $SINGULARITY_IMAGE
+Singularity> d_hydro --help
+```
+Single Command Execution
+```bash
+singularity exec $SINGULARITY_IMAGE delwaq1 --help
+```
