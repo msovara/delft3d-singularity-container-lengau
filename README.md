@@ -194,5 +194,5 @@ Common Issues:
   singularity exec --cleanenv $SINGULARITY_IMAGE ...
   ```
 Additional Resources <a name="additional-resources"></a>
-- https://wiki.chpc.ac.za/howto:singularity
+- How to singularity: https://wiki.chpc.ac.za/howto:singularity
 - Delft3D Official Documentation: https://oss.deltares.nl/web/delft3d
