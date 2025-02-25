@@ -50,7 +50,14 @@ Path to `.sif` file, e.g., `/apps/chpc/earth/delft3d-container/centos7_delft3d4-
 
 ---
 ## 🔍 Container Inspection & Validation <a name="container-inspection--validation"></a>
-3. Inspect Container Content
+
+### 3. Inspect Container Content
 ```bash
 singularity exec $SINGULARITY_IMAGE ls -l /opt/delft3d/bin/
 ```
+
+### 4. Check Library Dependencies
+```bash
+singularity exec $SINGULARITY_IMAGE ldd /opt/delft3d/bin/d_hydro
+```
+- Note: All libraries should show valid paths. "Not found" errors indicate container configuration issues.
