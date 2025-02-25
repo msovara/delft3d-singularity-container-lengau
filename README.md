@@ -26,7 +26,7 @@ This guide provides step-by-step instructions for running **Delft3D Flexible Mes
 ## 🛠️ Prerequisites <a name="prerequisites"></a>
 - ✅ CHPC Lengau cluster account  
 - ✅ Basic Linux command-line knowledge  
-- ✅ Familiarity with Delft3D workflow  
+- ✅ Some Familiarity with Delft3D workflow  
 
 ---
 
