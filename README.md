@@ -3,7 +3,7 @@
 # Running the Delft3D Flexible Mesh Singularity Container on LENGAU
 
 **Author**: Mthetho Vuyo Sovara 
-**Last Updated**: 12 February 2025
+**Last Updated**: 25 February 2025
 
 ---
 
@@ -21,7 +21,7 @@
 ---
 
 ## Introduction <a name="introduction"></a>
-This guide explains how to run Delft3D hydrodynamic modeling tools using Singularity containers on the CHPC Lengau cluster. Singularity allows reproducible execution by encapsulating dependencies in a portable container.
+This guide explains how to run Delft3D hydrodynamic modelling tools using Singularity containers on the CHPC Lengau cluster. Singularity allows reproducible execution by encapsulating dependencies in a portable container.
 
 ---
 
