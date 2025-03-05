@@ -270,7 +270,7 @@ mkdir -p $OUTPUT_DIR
 cd $INPUT_DIR || { echo "Failed to change to INPUT_DIR: $INPUT_DIR"; exit 1; }
 
 # Run Delft3D-FM inside Singularity container using MPI
-mpirun -np 24 singularity exec \
+mpirun -np $nproc singularity exec \
    --bind $INPUT_DIR:/input \
    --bind $OUTPUT_DIR:/output \
    $SINGULARITY_IMAGE $EXECUTABLE > $OUTPUT_DIR/delft3d_run_flow_wave.log 2>&1
