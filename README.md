@@ -151,7 +151,7 @@ Provides depth values at grid points (if not embedded in the `.grd` file).
 #### Delft3D executable will read the config.xml file and its dependencies so ensure that paths are real and applicable.
 The XML file configures a hydrodynamic simulation using Deltares' flow2D3D module. It specifies the model definition file (r17.mdf), enables remote control via DelftOnline, and sets the output directory for simulation results. The simulation is set to start with the flow2D3D module named myNameFlow.will
 
-```bash
+```xml
 # Deltares Hydrodynamic Simulation Configuration
 
 This document describes the XML configuration file used for setting up a hydrodynamic simulation using Deltares' `flow2D3D` module.
@@ -195,10 +195,9 @@ This document describes the XML configuration file used for setting up a hydrody
 ### Output Configuration
 - `<output>`: Specifies the output directory for simulation results.
   - `<directory>output/r17</directory>`: Output files will be saved in `output/r17`.
-
+```
 ## XML Code
-Here is the complete XML configuration:
-
+Here is an example XML configuration:
 ```xml
 <?xml version="1.0" encoding="iso-8859-1"?>
 <deltaresHydro xmlns="http://schemas.deltares.nl/deltaresHydro"
@@ -230,7 +229,7 @@ Here is the complete XML configuration:
     </output>
 </deltaresHydro>
 ```
-- Place the config.xml file in the appropriate directory.
+- Place the config.xml file in the appropriate directory (where the input data is located makes /input binding simpler).
 - Ensure the referenced files (r17.mdf, r17.url) are available.
 - Run the simulation using Deltares' software.
 ---
