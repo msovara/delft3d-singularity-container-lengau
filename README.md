@@ -285,6 +285,7 @@ Best Practices:
 🛠️ Troubleshooting <a name="troubleshooting"></a>
 Common Issues:
 
+- Remove error and log files from precious runs. 
 - Permission Denied: Verify .sif file accessibility with ls -l $SINGULARITY_IMAGE.
 - Missing Dependencies: Use ldd check from Section 4.
 - XML Errors: Validate with xmllint before execution.
