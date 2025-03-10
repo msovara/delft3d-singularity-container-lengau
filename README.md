@@ -241,8 +241,8 @@ Here is an example XML configuration:
 #PBS -P ERTH1609
 #PBS -q smp
 #PBS -l walltime=00:30:00
-#PBS -o /home/bgweba/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output/delft3d.out
-#PBS -e /home/bgweba/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output/delft3d.err
+#PBS -o /home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output/delft3d.out
+#PBS -e /home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output/delft3d.err
 #PBS -m abe
 #PBS -M bgweba@gmail.com
 
@@ -257,8 +257,8 @@ module load chpc/earth/delft3d-container/delft3d-singularity
 # Define variables
 SINGULARITY_IMAGE="/home/apps/chpc/earth/delft3d-singularity-container/centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif"
 EXECUTABLE="/opt/delft3d/bin/run_dflow2d3d.sh"
-INPUT_DIR="/home/bgweba/lustre/TNPA_Delft3D/examples/03_flow-wave"
-OUTPUT_DIR="/home/bgweba/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output"
+INPUT_DIR="/home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave"
+OUTPUT_DIR="/home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output"
 
 # Create directories
 mkdir -p $OUTPUT_DIR
