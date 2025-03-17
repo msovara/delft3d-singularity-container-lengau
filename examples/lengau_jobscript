@@ -1,0 +1,40 @@
+```bash
+#!/bin/bash
+#PBS -N delft3d_job
+#PBS -l select=1:ncpus=24:mpiprocs=24
+#PBS -P ERTH1609
+#PBS -q smp
+#PBS -l walltime=00:30:00
+#PBS -o /home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output/delft3d.out
+#PBS -e /home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output/delft3d.err
+#PBS -m abe
+#PBS -M bgweba@gmail.com
+
+# Clear any loaded modules
+module purge
+
+# Load required modules
+module load chpc/singularity/3.5.3
+module load chpc/openmpi/4.1.1/gcc-7.3.0
+module load chpc/earth/delft3d-container/delft3d-singularity
+
+# Define variables
+SINGULARITY_IMAGE="/home/apps/chpc/earth/delft3d-singularity-container/centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif"
+EXECUTABLE="/opt/delft3d/bin/run_dflow2d3d.sh"
+INPUT_DIR="/home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave"
+OUTPUT_DIR="/home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output"
+
+# Create directories
+mkdir -p $OUTPUT_DIR
+#mkdir -p $INPUT_DIR/r17
+#mkdir -p $INPUT_DIR/input/r17  # Explicitly create /input/r17 directory
+
+# Change to working directory
+cd $INPUT_DIR || { echo "Failed to change to INPUT_DIR: $INPUT_DIR"; exit 1; }
+
+# Run Delft3D-FM inside Singularity container using MPI
+mpirun -np $nproc singularity exec \
+   --bind $INPUT_DIR:/input \
+   --bind $OUTPUT_DIR:/output \
+   $SINGULARITY_IMAGE $EXECUTABLE > $OUTPUT_DIR/delft3d_run_flow_wave.log 2>&1
+```
