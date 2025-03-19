@@ -1,40 +1,52 @@
 ```bash
 #!/bin/bash
+
 #PBS -N delft3d_job
-#PBS -l select=1:ncpus=24:mpiprocs=24
+#PBS -l select=1:ncpus=24:mpiprocs=24:mem=100GB  
 #PBS -P ERTH1609
 #PBS -q smp
-#PBS -l walltime=00:30:00
-#PBS -o /home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output/delft3d.out
-#PBS -e /home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output/delft3d.err
+#PBS -l walltime=05:00:00
+#PBS -o /home/bgweba/lustre/TNPA_Delft3D/FLOWandWAVE/delft3d_output/delft3d.out
+#PBS -e /home/bgweba/lustre/TNPA_Delft3D/FLOWandWAVE/delft3d_output/delft3d.err
 #PBS -m abe
 #PBS -M bgweba@gmail.com
-
+ 
 # Clear any loaded modules
 module purge
-
+ 
 # Load required modules
 module load chpc/singularity/3.5.3
-module load chpc/openmpi/4.1.1/gcc-7.3.0
 module load chpc/earth/delft3d-container/delft3d-singularity
-
+ 
+# Verify loaded modules
+module list
+ 
+# Check the Singularity image path
+echo "SINGULARITY_IMAGE: $SINGULARITY_IMAGE"
+ 
 # Define variables
 SINGULARITY_IMAGE="/home/apps/chpc/earth/delft3d-singularity-container/centos7_delft3d4-65936_sha256.d24792169bd11f937b709f6456a73289229d621464e32271533dbc2b77cfbb9b.sif"
 EXECUTABLE="/opt/delft3d/bin/run_dflow2d3d.sh"
-INPUT_DIR="/home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave"
-OUTPUT_DIR="/home/userid/lustre/TNPA_Delft3D/examples/03_flow-wave/delft3d_output"
-
-# Create directories
-mkdir -p $OUTPUT_DIR
-#mkdir -p $INPUT_DIR/r17
-#mkdir -p $INPUT_DIR/input/r17  # Explicitly create /input/r17 directory
-
-# Change to working directory
-cd $INPUT_DIR || { echo "Failed to change to INPUT_DIR: $INPUT_DIR"; exit 1; }
-
-# Run Delft3D-FM inside Singularity container using MPI
-mpirun -np $nproc singularity exec \
-   --bind $INPUT_DIR:/input \
+WORKING_DIR="/home/bgweba/lustre/TNPA_Delft3D/FLOWandWAVE"
+OUTPUT_DIR="$WORKING_DIR/delft3d_output"
+ 
+# Change to the working directory
+cd $WORKING_DIR || { echo "Failed to change to WORKING_DIR: $WORKING_DIR"; exit 1; }
+ 
+# Debugging: List input files
+echo "Input files in $WORKING_DIR:"
+ls -l
+ 
+# Debugging: Check CAL.mdf for wave-related options
+#echo "Checking CAL.mdf for wave-related options:"
+#grep -i "wav" CAL.mdf
+ 
+# Debugging: Test MPI inside container
+echo "Testing MPI inside Singularity container:"
+singularity exec $SINGULARITY_IMAGE /opt/delft3d/bin/lnx64/flow2d3d/bin/mpirun -np 1 echo "MPI test"
+ 
+# Run Delft3D-FM inside Singularity container using the container's MPI runtime
+singularity exec --bind $WORKING_DIR:/input \
    --bind $OUTPUT_DIR:/output \
-   $SINGULARITY_IMAGE $EXECUTABLE > $OUTPUT_DIR/delft3d_run_flow_wave.log 2>&1
+   $SINGULARITY_IMAGE /opt/delft3d/bin/lnx64/flow2d3d/bin/mpirun -np 24 $EXECUTABLE /input/config_d_hydro.xml > $OUTPUT_DIR/delft3d_run_flow_wave.log 2>&1
 ```
